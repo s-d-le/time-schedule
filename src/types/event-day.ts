@@ -10,7 +10,7 @@ export enum Days {
 
 export type TimeSlots = {
   startTime: string
-  endTime: string
+  endTime?: string
 }
 
 export type EventDay = {

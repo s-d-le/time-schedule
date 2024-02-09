@@ -14,10 +14,7 @@ export const useBookingStore = defineStore('booking', () => {
     {
       day: Days.Mon,
       available: true,
-      timeSlots: [
-        { startTime: '09:00', endTime: '18:00' },
-        { startTime: '10:00', endTime: '11:00' }
-      ]
+      timeSlots: [{ startTime: '09:00', endTime: '18:00' }, { startTime: '10:00' }]
     },
     {
       day: Days.Tue,
@@ -27,17 +24,17 @@ export const useBookingStore = defineStore('booking', () => {
     {
       day: Days.Wed,
       available: true,
-      timeSlots: [{ startTime: '09:00', endTime: '18:00' }]
+      timeSlots: [{ startTime: '09:00' }]
     },
     {
       day: Days.Thu,
       available: true,
-      timeSlots: [{ startTime: '09:00', endTime: '18:00' }]
+      timeSlots: [{ startTime: '09:00' }]
     },
     {
       day: Days.Fri,
       available: true,
-      timeSlots: [{ startTime: '09:00', endTime: '18:00' }]
+      timeSlots: [{ startTime: '09:00' }]
     },
     {
       day: Days.Sat,
