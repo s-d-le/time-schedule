@@ -4,23 +4,20 @@ import { useBookingStore } from '@/stores/booking'
 import { VisitDuration } from '@/types/visit-duration'
 import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
+import TimeSelection from '@/components/TimeSelection.vue'
 
-const store = useBookingStore()
-// const { visitDuration, numberOfBooking } = store.state
-const refs = storeToRefs(store)
-
-console.log(refs.state.value.visitDuration)
+const store = storeToRefs(useBookingStore())
 
 const settings = reactive({
-  visitDuration: VisitDuration['15m'],
+  visitDuration: VisitDuration['15 min'],
   numberOfBooking: 1,
   videoTourCall: false
 })
 
 const setBookingSettings = () => {
   const { visitDuration, numberOfBooking } = settings
-  store.state.visitDuration = visitDuration
-  store.state.numberOfBooking = numberOfBooking
+  store.state.value.visitDuration = visitDuration
+  store.state.value.numberOfBooking = numberOfBooking
   updateEndTime()
 }
 
@@ -29,8 +26,12 @@ const endTime = ref<string>()
 
 const updateEndTime = () => {
   const start = new Date(`2024-01-01T${startTime.value}`)
-  const end = new Date(start.getTime() + settings.visitDuration * settings.numberOfBooking * 60000) // Calculate end time
+  const end = new Date(
+    start.getTime() +
+      parseInt(store.state.value.visitDuration) * store.state.value.numberOfBooking * 60000
+  ) // Calculate end time
   endTime.value = format(end, 'HH:mm')
+  console.log(endTime.value)
 }
 
 onMounted(() => {
@@ -45,7 +46,11 @@ onMounted(() => {
       <div class="form-control">
         <label for="visitDuration">Visit duration</label>
         <select id="visitDuration" v-model="settings.visitDuration">
-          <option v-for="duration in VisitDuration" :key="duration" :value="duration">
+          <option
+            v-for="duration in Object.values(VisitDuration)"
+            :key="duration"
+            :value="duration"
+          >
             {{ duration }} min
           </option>
         </select>
@@ -62,10 +67,23 @@ onMounted(() => {
       <button class="btn">Next</button>
     </form>
 
-    <div>
-      <input type="time" id="startTime" v-model="startTime" @change="updateEndTime" />
-      <span>-</span>
-      <input type="time" id="endTime" v-model="endTime" disabled />
+    <div v-for="eventDay in store.eventDays.value" :key="eventDay.day">
+      {{ eventDay.day }}
+      <TimeSelection
+        v-for="timeSlot in eventDay.timeSlots"
+        :key="timeSlot.startTime"
+        v-model="timeSlot.startTime"
+        :end-time="timeSlot.endTime"
+        @update:end-time="updateEndTime"
+        @click:add-more-slot="console.log('add more slot')"
+      />
     </div>
+
+    <TimeSelection
+      v-model="startTime"
+      :end-time="endTime"
+      @update:end-time="updateEndTime"
+      @click:add-more-slot="console.log('add more slot')"
+    />
   </div>
 </template>
