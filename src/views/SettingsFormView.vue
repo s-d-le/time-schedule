@@ -2,7 +2,6 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useBookingStore } from '@/stores/booking'
 import { VisitDuration } from '@/types/visit-duration'
-import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import TimeSelection from '@/components/TimeSelection.vue'
 
@@ -18,25 +17,7 @@ const setBookingSettings = () => {
   const { visitDuration, numberOfBooking } = settings
   store.state.value.visitDuration = visitDuration
   store.state.value.numberOfBooking = numberOfBooking
-  // updateEndTime()
 }
-
-const startTime = ref<string>('09:00')
-const endTime = ref<string>()
-
-const updateEndTime = (startTime: string) => {
-  const start = new Date(`2024-01-01T${startTime}`)
-  const end = new Date(
-    start.getTime() +
-      parseInt(store.state.value.visitDuration) * store.state.value.numberOfBooking * 60000
-  ) // Calculate end time
-  // console.log(endTime.value)
-  return format(end, 'HH:mm')
-}
-
-// onMounted(() => {
-//   updateEndTime()
-// })
 </script>
 
 <template>
@@ -73,17 +54,8 @@ const updateEndTime = (startTime: string) => {
         v-for="timeSlot in eventDay.timeSlots"
         :key="timeSlot.startTime"
         v-model="timeSlot.startTime"
-        :end-time="updateEndTime(timeSlot.startTime)"
-        @update:end-time="updateEndTime"
         @click:add-more-slot="console.log('add more slot')"
       />
     </div>
-
-    <TimeSelection
-      v-model="startTime"
-      :end-time="endTime"
-      @update:end-time="updateEndTime"
-      @click:add-more-slot="console.log('add more slot')"
-    />
   </div>
 </template>
