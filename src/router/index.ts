@@ -18,9 +18,9 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/expense',
-      name: 'expense',
-      component: () => import('../views/ExpenseView.vue')
+      path: '/settings',
+      name: 'settings',
+      component: () => import('../views/SettingsFormView.vue')
     }
   ]
 })

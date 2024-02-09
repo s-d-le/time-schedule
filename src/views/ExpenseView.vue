@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import ShowBalance from '@/components/ShowBalance.vue'
-import IncomeExpense from '@/components/IncomeExpense.vue'
-import TransactionList from '@/components/TransactionList.vue'
-import AddTransaction from '@/components/AddTransaction.vue'
+import ShowBalance from '@/components/ExpenseComponents/ShowBalance.vue'
+import IncomeExpense from '@/components/ExpenseComponents/IncomeExpense.vue'
+import TransactionList from '@/components/ExpenseComponents/TransactionList.vue'
+import AddTransaction from '@/components/ExpenseComponents/AddTransaction.vue'
 
 import { storeToRefs } from 'pinia'
 import { useExpenseStore } from '@/stores/expense'
