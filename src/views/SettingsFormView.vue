@@ -18,25 +18,25 @@ const setBookingSettings = () => {
   const { visitDuration, numberOfBooking } = settings
   store.state.value.visitDuration = visitDuration
   store.state.value.numberOfBooking = numberOfBooking
-  updateEndTime()
+  // updateEndTime()
 }
 
 const startTime = ref<string>('09:00')
 const endTime = ref<string>()
 
-const updateEndTime = () => {
-  const start = new Date(`2024-01-01T${startTime.value}`)
+const updateEndTime = (startTime: string) => {
+  const start = new Date(`2024-01-01T${startTime}`)
   const end = new Date(
     start.getTime() +
       parseInt(store.state.value.visitDuration) * store.state.value.numberOfBooking * 60000
   ) // Calculate end time
-  endTime.value = format(end, 'HH:mm')
-  console.log(endTime.value)
+  // console.log(endTime.value)
+  return format(end, 'HH:mm')
 }
 
-onMounted(() => {
-  updateEndTime()
-})
+// onMounted(() => {
+//   updateEndTime()
+// })
 </script>
 
 <template>
@@ -73,7 +73,7 @@ onMounted(() => {
         v-for="timeSlot in eventDay.timeSlots"
         :key="timeSlot.startTime"
         v-model="timeSlot.startTime"
-        :end-time="timeSlot.endTime"
+        :end-time="updateEndTime(timeSlot.startTime)"
         @update:end-time="updateEndTime"
         @click:add-more-slot="console.log('add more slot')"
       />
