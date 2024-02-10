@@ -35,6 +35,10 @@ const addMoreSlot = () => {
   })
 }
 
+const removeSlot = () => {
+  rawStore.eventDays[props.eventIndex].timeSlots.splice(props.timeSlotIndex, 1)
+}
+
 defineEmits(['click:addMoreSlot'])
 
 defineExpose({
@@ -48,6 +52,7 @@ defineExpose({
     <span>-</span>
     <input type="time" id="endTime" :value="endTime" disabled />
     <!-- <span @click="$emit('click:addMoreSlot')">+</span> -->
+    <span @click="removeSlot">-</span>
     <span @click="addMoreSlot">+</span>
   </div>
 </template>
