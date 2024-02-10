@@ -4,9 +4,15 @@ import { useBookingStore } from '@/stores/booking'
 import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 
+const props = defineProps<{
+  timeSlotEntry: string
+}>()
+
+console.log(props.timeSlotEntry)
+
 const store = storeToRefs(useBookingStore())
 
-const startTime = defineModel()
+const startTime = defineModel<string>()
 
 const endTime = computed(() => {
   const start = new Date(`2024-01-01T${startTime.value}`)
@@ -19,6 +25,8 @@ const endTime = computed(() => {
 })
 
 defineEmits(['click:addMoreSlot'])
+
+console.log(startTime.value)
 </script>
 
 <template>

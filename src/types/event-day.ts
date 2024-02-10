@@ -9,6 +9,7 @@ export enum Days {
 }
 
 export type TimeSlots = {
+  timeSlotEntry?: string
   startTime: string
   endTime?: string
 }

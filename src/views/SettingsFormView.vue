@@ -51,8 +51,9 @@ const setBookingSettings = () => {
     <div v-for="eventDay in store.eventDays.value" :key="eventDay.day">
       {{ eventDay.day }}
       <TimeSelection
-        v-for="timeSlot in eventDay.timeSlots"
-        :key="timeSlot.startTime"
+        v-for="(timeSlot, index) in eventDay.timeSlots"
+        :key="eventDay.day + '-' + index"
+        :time-slot-entry="eventDay.day + '-' + index"
         v-model="timeSlot.startTime"
         @click:add-more-slot="console.log('add more slot')"
       />

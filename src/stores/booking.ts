@@ -14,12 +14,12 @@ export const useBookingStore = defineStore('booking', () => {
     {
       day: Days.Mon,
       available: true,
-      timeSlots: [{ startTime: '09:00', endTime: '18:00' }, { startTime: '10:00' }]
+      timeSlots: [{ startTime: '09:00' }]
     },
     {
       day: Days.Tue,
       available: true,
-      timeSlots: undefined
+      timeSlots: [{ startTime: '09:00' }]
     },
     {
       day: Days.Wed,
