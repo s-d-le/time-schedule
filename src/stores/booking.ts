@@ -39,12 +39,12 @@ export const useBookingStore = defineStore('booking', () => {
     {
       day: Days.Sat,
       available: false,
-      timeSlots: undefined
+      timeSlots: []
     },
     {
       day: Days.Sun,
       available: false,
-      timeSlots: undefined
+      timeSlots: []
     }
   ])
 

@@ -17,5 +17,5 @@ export type TimeSlots = {
 export type EventDay = {
   day: Days
   available: boolean
-  timeSlots: TimeSlots[] | undefined
+  timeSlots: TimeSlots[]
 }

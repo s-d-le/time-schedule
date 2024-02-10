@@ -6,11 +6,14 @@ import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
   timeSlotEntry: string
+  eventIndex: number
+  timeSlotIndex: number
 }>()
 
-console.log(props.timeSlotEntry)
-
 const store = storeToRefs(useBookingStore())
+const rawStore = useBookingStore()
+
+const timeslotStore = rawStore.eventDays[props.eventIndex].timeSlots[props.timeSlotIndex]
 
 const startTime = defineModel<string>()
 
@@ -24,9 +27,19 @@ const endTime = computed(() => {
   return format(end, 'HH:mm')
 })
 
+timeslotStore.endTime = endTime.value
+//push new time slot with startTime as endTime of the previous time slot
+const addMoreSlot = () => {
+  rawStore.eventDays[props.eventIndex].timeSlots.push({
+    startTime: endTime.value
+  })
+}
+
 defineEmits(['click:addMoreSlot'])
 
-console.log(startTime.value)
+defineExpose({
+  endTime
+})
 </script>
 
 <template>
@@ -34,6 +47,7 @@ console.log(startTime.value)
     <input type="time" id="startTime" v-model="startTime" />
     <span>-</span>
     <input type="time" id="endTime" :value="endTime" disabled />
-    <span @click="$emit('click:addMoreSlot')">+</span>
+    <!-- <span @click="$emit('click:addMoreSlot')">+</span> -->
+    <span @click="addMoreSlot">+</span>
   </div>
 </template>
