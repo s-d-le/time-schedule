@@ -31,7 +31,9 @@ interface CalendarEvent {
 const calendar: CalendarEvent[] = []
 
 const numberOfBooking = store.state.value.numberOfBooking
-const visitDuration = store.state.value.visitDuration
+const visitDuration = parseInt(store.state.value.visitDuration)
+
+console.log(visitDuration)
 
 eventsData.forEach((eventDay) => {
   const dayIndex = dayIndexMap[eventDay.day] // Get the index of the day in a week
