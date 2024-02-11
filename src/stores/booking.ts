@@ -15,36 +15,43 @@ export const useBookingStore = defineStore(
     const eventDays = ref<EventDay[]>([
       {
         day: Days.Mon,
+        title: 'available',
         available: true,
-        timeSlots: [{ startTime: '09:00' }]
+        timeSlots: [{ start: '09:00' }]
       },
       {
         day: Days.Tue,
+        title: 'available',
         available: true,
-        timeSlots: [{ startTime: '09:00' }]
+        timeSlots: [{ start: '09:00' }]
       },
       {
         day: Days.Wed,
+        title: 'available',
         available: true,
-        timeSlots: [{ startTime: '09:00' }]
+        timeSlots: [{ start: '09:00' }]
       },
       {
         day: Days.Thu,
+        title: 'available',
         available: true,
-        timeSlots: [{ startTime: '09:00' }]
+        timeSlots: [{ start: '09:00' }]
       },
       {
         day: Days.Fri,
+        title: 'available',
         available: true,
-        timeSlots: [{ startTime: '09:00' }]
+        timeSlots: [{ start: '09:00' }]
       },
       {
         day: Days.Sat,
+        title: 'available',
         available: false,
         timeSlots: []
       },
       {
         day: Days.Sun,
+        title: 'available',
         available: false,
         timeSlots: []
       }

@@ -18,20 +18,21 @@ const timeslotStore = rawStore.eventDays[props.eventIndex].timeSlots[props.timeS
 const startTime = defineModel<string>()
 
 const endTime = computed(() => {
-  const start = new Date(`2024-01-01T${startTime.value}`)
+  const start = new Date(`2024-02-12T${startTime.value}`)
   // Calculate end time
   const end = new Date(
     start.getTime() +
       parseInt(store.state.value.visitDuration) * store.state.value.numberOfBooking * 60000
   )
+
   return format(end, 'HH:mm')
 })
 
-timeslotStore.endTime = endTime.value
+timeslotStore.end = endTime.value
 //push new time slot with startTime as endTime of the previous time slot
 const addMoreSlot = () => {
   rawStore.eventDays[props.eventIndex].timeSlots.push({
-    startTime: endTime.value
+    start: endTime.value
   })
 }
 

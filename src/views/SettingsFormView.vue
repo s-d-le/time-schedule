@@ -84,7 +84,7 @@ const newTimeSlot = (eventDay: EventDay, index: number) => {
         :event-index="eventIndex"
         :time-slot-index="timeSlotIntex"
         :time-slot-entry="eventDay.day + '-' + timeSlotIntex"
-        v-model="timeSlot.startTime"
+        v-model="timeSlot.start"
         @click:add-more-slot="newTimeSlot(eventDay, timeSlotIntex)"
       />
     </div>

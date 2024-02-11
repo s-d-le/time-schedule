@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, toRaw } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookingStore } from '@/stores/booking'
+import { format } from 'date-fns'
 
 import { ScheduleXCalendar } from '@schedule-x/vue'
 import {
@@ -14,48 +15,105 @@ import {
 import '@schedule-x/theme-default/dist/index.css'
 
 const store = storeToRefs(useBookingStore())
+const eventsData = toRaw(store.eventDays.value)
+
+const dayIndexMap = {
+  Sunday: 0,
+  Monday: 1,
+  Tuesday: 2,
+  Wednesday: 3,
+  Thursday: 4,
+  Friday: 5,
+  Saturday: 6
+}
+
+const calendar = []
+
+eventsData.forEach((eventDay) => {
+  const dayIndex = dayIndexMap[eventDay.day] // Get the index of the day in a week
+  const currentDate = new Date() // Get the current date
+  const currentDateDayIndex = currentDate.getDay() // Get the index of the current day in a week
+
+  // Calculate the date of the first matching day of the week
+  const firstMatchingDayDate = new Date(currentDate)
+  firstMatchingDayDate.setDate(
+    firstMatchingDayDate.getDate() + ((dayIndex - currentDateDayIndex + 7) % 7)
+  )
+
+  // Iterate over timeSlots and create calendar entries
+  eventDay.timeSlots.forEach((timeSlot) => {
+    const startTime = new Date(firstMatchingDayDate)
+    const endTime = new Date(firstMatchingDayDate)
+
+    // Extract hours and minutes from time slot strings
+    const [startHours, startMinutes] = timeSlot.start.split(':')
+    const [endHours, endMinutes] = timeSlot.end.split(':')
+
+    // Set hours and minutes to start and end dates
+    startTime.setHours(startHours)
+    startTime.setMinutes(startMinutes)
+    endTime.setHours(endHours)
+    endTime.setMinutes(endMinutes)
+
+    // Push calendar entry
+    calendar.push({
+      id: calendar.length + 1, // You can adjust the id generation logic as needed
+      title: '', // Ignore title
+      start: format(startTime, 'yyyy-MM-dd HH:mm'), // Convert date to ISO string
+      end: format(endTime, 'yyyy-MM-dd HH:mm') // Convert date to ISO string
+    })
+  })
+})
+
+console.log('calendar', calendar)
 
 onMounted(() => {
-  console.log(store.eventDays.value)
+  console.log(eventsData)
 })
+
+const today = format(new Date(), 'yyyy-MM-dd')
 
 // Calendar setup
 const calendarApp = createCalendar({
-  selectedDate: '2023-12-19',
-  views: [viewDay, viewWeek, viewMonthGrid, viewMonthAgenda],
+  selectedDate: today,
+  views: [viewDay, viewWeek],
   defaultView: viewWeek.name,
-  events: [
-    {
-      id: 1,
-      title: 'Event 1',
-      start: '2023-12-19',
-      end: '2023-12-19'
-    },
-    {
-      id: 2,
-      title: 'Event 2',
-      start: '2023-12-20 12:00',
-      end: '2023-12-20 13:00'
-    }
-  ]
+  dayBoundaries: {
+    start: '06:00',
+    end: '18:00'
+  },
+  events: calendar
+  // events: [
+  //   {
+  //     id: 1,
+  //     title: 'Event 1',
+  //     start: '2023-12-19 08:00',
+  //     end: '2023-12-19 12:00'
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Event 1',
+  //     start: '2023-12-19 12:00',
+  //     end: '2023-12-19 14:00'
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Event 2',
+  //     start: '2023-12-20 12:00',
+  //     end: '2023-12-20 13:00'
+  //   }
+  // ]
 })
 </script>
 
 <template>
-  <div class="flex about">
-    <h1>Calendar Page</h1>
-    <div>
-      <ScheduleXCalendar :calendar-app="calendarApp" />
-    </div>
+  <div class="calendar-wrapper">
+    <ScheduleXCalendar :calendar-app="calendarApp" />
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
+<style scoped>
+.calendar-wrapper {
+  height: 1200px;
 }
 </style>

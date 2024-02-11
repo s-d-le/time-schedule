@@ -10,12 +10,14 @@ export enum Days {
 
 export type TimeSlots = {
   timeSlotEntry?: string
-  startTime: string
-  endTime?: string
+  date?: string
+  start: string
+  end?: string
 }
 
 export type EventDay = {
   day: Days
-  available: boolean
+  title?: string
+  available?: boolean
   timeSlots: TimeSlots[]
 }
