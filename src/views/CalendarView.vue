@@ -5,13 +5,7 @@ import { useBookingStore } from '@/stores/booking'
 import { format } from 'date-fns'
 
 import { ScheduleXCalendar } from '@schedule-x/vue'
-import {
-  createCalendar,
-  viewDay,
-  viewWeek,
-  viewMonthGrid,
-  viewMonthAgenda
-} from '@schedule-x/calendar'
+import { createCalendar, viewDay, viewWeek } from '@schedule-x/calendar'
 import '@schedule-x/theme-default/dist/index.css'
 
 const store = storeToRefs(useBookingStore())
@@ -27,7 +21,14 @@ const dayIndexMap = {
   Saturday: 6
 }
 
-const calendar = []
+interface CalendarEvent {
+  id: number
+  title?: string
+  start?: string
+  end?: string
+}
+
+const calendar: CalendarEvent[] = []
 
 eventsData.forEach((eventDay) => {
   const dayIndex = dayIndexMap[eventDay.day] // Get the index of the day in a week
@@ -42,25 +43,27 @@ eventsData.forEach((eventDay) => {
 
   // Iterate over timeSlots and create calendar entries
   eventDay.timeSlots.forEach((timeSlot) => {
+    if (!timeSlot.end) return // Skip time slots without end time
+
     const startTime = new Date(firstMatchingDayDate)
     const endTime = new Date(firstMatchingDayDate)
 
     // Extract hours and minutes from time slot strings
     const [startHours, startMinutes] = timeSlot.start.split(':')
-    const [endHours, endMinutes] = timeSlot.end.split(':')
+    const [endHours, endMinutes] = (timeSlot.end ?? timeSlot.start).split(':')
 
     // Set hours and minutes to start and end dates
-    startTime.setHours(startHours)
-    startTime.setMinutes(startMinutes)
-    endTime.setHours(endHours)
-    endTime.setMinutes(endMinutes)
+    startTime.setHours(parseInt(startHours))
+    startTime.setMinutes(parseInt(startMinutes))
+    endTime.setHours(parseInt(endHours))
+    endTime.setMinutes(parseInt(endMinutes))
 
     // Push calendar entry
     calendar.push({
-      id: calendar.length + 1, // You can adjust the id generation logic as needed
-      title: '', // Ignore title
-      start: format(startTime, 'yyyy-MM-dd HH:mm'), // Convert date to ISO string
-      end: format(endTime, 'yyyy-MM-dd HH:mm') // Convert date to ISO string
+      id: calendar.length,
+      title: eventDay.title,
+      start: format(startTime, 'yyyy-MM-dd HH:mm'),
+      end: format(endTime, 'yyyy-MM-dd HH:mm')
     })
   })
 })

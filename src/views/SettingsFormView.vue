@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, isProxy, toRaw } from 'vue'
+import { ref, reactive } from 'vue'
 import { useBookingStore } from '@/stores/booking'
 import { VisitDuration } from '@/types/visit-duration'
 import { storeToRefs } from 'pinia'
@@ -42,15 +42,21 @@ const newTimeSlot = (eventDay: EventDay, index: number) => {
   // }
   // console.log(timeSelection.value)
 }
+
+const labelClass = 'mb-2 text-sm font-medium text-gray-900 dark:text-white'
+const optionClass =
+  'max-w-24 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark dark:focus:border-blue-500'
+const checkboxClass = 'h-4 w-4 rounded border-gray-300 text-blue-500'
+const buttonClass =
+  'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
 </script>
 
 <template>
   <div class="container">
-    <h1>Booking slot settings</h1>
     <form @submit.prevent="setBookingSettings">
-      <div class="form-control">
-        <label for="visitDuration">Visit duration</label>
-        <select id="visitDuration" v-model="settings.visitDuration">
+      <div class="mb-4">
+        <label for="visitDuration" :class="labelClass">Visit duration</label>
+        <select id="visitDuration" :class="optionClass" v-model="settings.visitDuration">
           <option
             v-for="duration in Object.values(VisitDuration)"
             :key="duration"
@@ -60,24 +66,36 @@ const newTimeSlot = (eventDay: EventDay, index: number) => {
           </option>
         </select>
       </div>
-      <div class="form-control">
-        <label for="numberOfBooking">Number of booking</label>
+      <div class="mb-4">
+        <label for="numberOfBooking" :class="labelClass">Number of booking</label>
         <!-- max 48 -->
-        <input v-model="settings.numberOfBooking" type="number" max="48" id="numberOfBooking" />
+        <input
+          v-model="settings.numberOfBooking"
+          :class="optionClass"
+          type="number"
+          max="48"
+          id="numberOfBooking"
+        />
       </div>
-      <div class="form-control">
-        <label for="videoTourCall">Allow video tour call</label>
-        <input type="checkbox" id="videoTourCall" v-model="settings.videoTourCall" />
+      <div class="mb-4">
+        <input
+          type="checkbox"
+          id="videoTourCall"
+          :class="checkboxClass"
+          v-model="settings.videoTourCall"
+        />
+        <label for="videoTourCall" :class="labelClass">Allow video tour call</label>
       </div>
-      <button class="btn">Next</button>
+      <button :class="buttonClass">Next</button>
     </form>
 
     <div
       v-for="(eventDay, eventIndex) in store.eventDays.value"
       :key="eventDay.day"
       ref="timeSelection"
+      class="grid grid-cols-[100px,1fr] gap-4 mb-2 items-center"
     >
-      {{ eventDay.day }}
+      <span :class="['font-bold', labelClass]">{{ eventDay.day }}</span>
       <TimeSelection
         v-for="(timeSlot, timeSlotIntex) in eventDay.timeSlots"
         :key="eventDay.day + '-' + timeSlotIntex"

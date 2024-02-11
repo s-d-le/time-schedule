@@ -45,15 +45,26 @@ defineEmits(['click:addMoreSlot'])
 defineExpose({
   endTime
 })
+
+const inputClass =
+  'max-w-24 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark dark:focus:border-blue-500'
 </script>
 
 <template>
-  <div>
-    <input type="time" id="startTime" v-model="startTime" />
-    <span>-</span>
-    <input type="time" id="endTime" :value="endTime" disabled />
+  <div class="flex items-center gap-2">
+    <input type="time" :class="inputClass" id="startTime" v-model="startTime" />
+    <span class="font-bold">-</span>
+    <input type="time" :class="inputClass" id="endTime" :value="endTime" disabled />
     <!-- <span @click="$emit('click:addMoreSlot')">+</span> -->
-    <span @click="removeSlot">-</span>
-    <span @click="addMoreSlot">+</span>
+    <span
+      class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+      @click="removeSlot"
+      >-</span
+    >
+    <span
+      class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+      @click="addMoreSlot"
+      >+</span
+    >
   </div>
 </template>
