@@ -30,6 +30,9 @@ interface CalendarEvent {
 
 const calendar: CalendarEvent[] = []
 
+const numberOfBooking = store.state.value.numberOfBooking
+const visitDuration = store.state.value.visitDuration
+
 eventsData.forEach((eventDay) => {
   const dayIndex = dayIndexMap[eventDay.day] // Get the index of the day in a week
   const currentDate = new Date() // Get the current date
