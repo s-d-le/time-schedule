@@ -23,8 +23,6 @@ const endTime = computed(() => {
       parseInt(store.state.value.visitDuration) * store.state.value.numberOfBooking * 60000
   )
 
-  console.log('start', startTime.value)
-
   return format(end, 'HH:mm')
 })
 
@@ -54,15 +52,21 @@ const inputClass =
   <div class="flex items-center gap-2">
     <input type="time" :class="inputClass" id="startTime" v-model="startTime" />
     <span class="font-bold">-</span>
-    <input type="time" :class="inputClass" id="endTime" :value="endTime" disabled />
+    <input
+      type="time"
+      :class="['text-gray-100 dark:text-gray-500', inputClass]"
+      id="endTime"
+      :value="endTime"
+      disabled
+    />
     <!-- <span @click="$emit('click:addMoreSlot')">+</span> -->
     <span
-      class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+      class="bg-gray-100 cursor-pointer text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
       @click="removeSlot"
       >-</span
     >
     <span
-      class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+      class="bg-green-100 cursor-pointer text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
       @click="addMoreSlot"
       >+</span
     >

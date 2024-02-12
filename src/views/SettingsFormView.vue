@@ -44,43 +44,38 @@ const buttonClass =
 </script>
 
 <template>
-  <div class="container">
-    <form @submit.prevent="setBookingSettings">
-      <div class="mb-4">
-        <label for="visitDuration" :class="labelClass">Visit duration</label>
-        <select id="visitDuration" :class="optionClass" v-model="settings.visitDuration">
-          <option
-            v-for="duration in Object.values(VisitDuration)"
-            :key="duration"
-            :value="duration"
-          >
-            {{ duration }} min
-          </option>
-        </select>
-      </div>
-      <div class="mb-4">
-        <label for="numberOfBooking" :class="labelClass">Number of booking</label>
-        <!-- max 48 -->
-        <input
-          v-model="settings.numberOfBooking"
-          :class="optionClass"
-          type="number"
-          max="48"
-          id="numberOfBooking"
-        />
-      </div>
-      <div class="mb-4">
-        <input
-          type="checkbox"
-          id="videoTourCall"
-          :class="checkboxClass"
-          v-model="settings.allowVideoTourCall"
-        />
-        <label for="videoTourCall" :class="labelClass">Allow video tour call</label>
-      </div>
-      <button :class="buttonClass">Next</button>
-    </form>
-
+  <form @submit.prevent="setBookingSettings">
+    <div class="mb-4">
+      <label for="visitDuration" :class="labelClass">Visit duration</label>
+      <select id="visitDuration" :class="optionClass" v-model="settings.visitDuration">
+        <option v-for="duration in Object.values(VisitDuration)" :key="duration" :value="duration">
+          {{ duration }} min
+        </option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label for="numberOfBooking" :class="labelClass">Number of booking</label>
+      <!-- max 48 -->
+      <input
+        v-model="settings.numberOfBooking"
+        :class="optionClass"
+        type="number"
+        max="48"
+        id="numberOfBooking"
+      />
+    </div>
+    <div class="mb-4">
+      <input
+        type="checkbox"
+        id="videoTourCall"
+        :class="checkboxClass"
+        v-model="settings.allowVideoTourCall"
+      />
+      <label for="videoTourCall" :class="labelClass">Allow video tour call</label>
+    </div>
+    <button :class="buttonClass">Next</button>
+  </form>
+  <div v-if="showSchedule">
     <div
       v-for="(eventDay, eventIndex) in store.eventDays.value"
       :key="eventDay.day"
