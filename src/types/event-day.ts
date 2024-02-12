@@ -18,6 +18,7 @@ export type TimeSlots = {
 export type EventDay = {
   day: Days
   title?: string
+  allowVideoTourCall?: boolean
   available?: boolean
   timeSlots: TimeSlots[]
 }

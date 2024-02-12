@@ -16,7 +16,6 @@ const rawStore = useBookingStore()
 const timeslotStore = rawStore.eventDays[props.eventIndex].timeSlots[props.timeSlotIndex]
 
 const startTime = defineModel<string>()
-
 const endTime = computed(() => {
   const start = new Date(`2024-02-12T${startTime.value}`)
   // Calculate end time

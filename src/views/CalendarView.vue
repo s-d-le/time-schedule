@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, toRaw } from 'vue'
+import { toRaw } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookingStore } from '@/stores/booking'
 import { format, addMinutes, parse, getHours, getMinutes } from 'date-fns'
@@ -48,32 +48,32 @@ eventsData.forEach((eventDay) => {
   eventDay.timeSlots.forEach((timeSlot) => {
     if (!timeSlot.end) return // Skip time slots without end time
 
-    const startTime = new Date(firstMatchingDayDate) //Mon Feb 12 2024 08:17:22 GMT+0100 ...
-    const endTime = new Date(firstMatchingDayDate)
+    // Keep clean to track the day of the week
+    const startEventDate = new Date(firstMatchingDayDate) //Mon Feb 12 2024 08:17:22 GMT+0100 ...
+    const endEventDate = new Date(firstMatchingDayDate)
 
-    const startTimeSlot = parse(timeSlot.start, 'HH:mm', new Date())
-    const endTimeSlot = addMinutes(startTimeSlot, visitDuration)
+    //loop through timeSlot and create events based on numberOfBooking and visitDuration
+    for (let i = 0; i < numberOfBooking; i++) {
+      const startTimeSlot = parse(timeSlot.start, 'HH:mm', new Date())
+      const startBooking = addMinutes(startTimeSlot, i * visitDuration)
+      const endBooking = addMinutes(startBooking, visitDuration)
 
-    // Extract hours and minutes from time slot strings
-    const [startHours, startMinutes] = timeSlot.start.split(':')
+      // Set hours and minutes to start and end dates
+      startEventDate.setHours(getHours(startBooking))
+      startEventDate.setMinutes(getMinutes(startBooking))
+      endEventDate.setHours(getHours(endBooking))
+      endEventDate.setMinutes(getMinutes(endBooking))
 
-    // Set hours and minutes to start and end dates
-    startTime.setHours(parseInt(startHours))
-    startTime.setMinutes(parseInt(startMinutes))
-    endTime.setHours(getHours(endTimeSlot))
-    endTime.setMinutes(getMinutes(endTimeSlot))
-
-    // Push calendar entry
-    calendar.push({
-      id: calendar.length,
-      title: eventDay.title,
-      start: format(startTime, 'yyyy-MM-dd HH:mm'),
-      end: format(endTime, 'yyyy-MM-dd HH:mm')
-    })
+      // Push calendar entry
+      calendar.push({
+        id: calendar.length,
+        title: eventDay.title,
+        start: format(startEventDate, 'yyyy-MM-dd HH:mm'),
+        end: format(endEventDate, 'yyyy-MM-dd HH:mm')
+      })
+    }
   })
 })
-
-console.log('calendar', calendar)
 
 const today = format(new Date(), 'yyyy-MM-dd')
 
@@ -87,26 +87,6 @@ const calendarApp = createCalendar({
     end: '18:00'
   },
   events: calendar
-  // events: [
-  //   {
-  //     id: 1,
-  //     title: 'Event 1',
-  //     start: '2023-12-19 08:00',
-  //     end: '2023-12-19 12:00'
-  //   },
-  //   {
-  //     id: 2,
-  //     title: 'Event 1',
-  //     start: '2023-12-19 12:00',
-  //     end: '2023-12-19 14:00'
-  //   },
-  //   {
-  //     id: 3,
-  //     title: 'Event 2',
-  //     start: '2023-12-20 12:00',
-  //     end: '2023-12-20 13:00'
-  //   }
-  // ]
 })
 </script>
 

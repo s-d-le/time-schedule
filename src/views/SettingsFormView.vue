@@ -8,6 +8,8 @@ import type { EventDay } from '@/types/event-day'
 
 const store = storeToRefs(useBookingStore())
 
+const showSchedule = ref<boolean>(false)
+
 const settings = reactive({
   visitDuration: VisitDuration['15 min'],
   numberOfBooking: 1,
@@ -15,6 +17,7 @@ const settings = reactive({
 })
 
 const setBookingSettings = () => {
+  showSchedule.value = true
   const { visitDuration, numberOfBooking } = settings
   store.state.value.visitDuration = visitDuration
   store.state.value.numberOfBooking = numberOfBooking
@@ -89,25 +92,27 @@ const buttonClass =
       <button :class="buttonClass">Next</button>
     </form>
 
-    <div
-      v-for="(eventDay, eventIndex) in store.eventDays.value"
-      :key="eventDay.day"
-      ref="timeSelection"
-      data-class="grid grid-cols-[10px,100px,1fr] gap-4 mb-2 items-center"
-    >
-      <input type="checkbox" :class="checkboxClass" />
-      <span :class="['font-bold mb-0', labelClass]">{{ eventDay.day }}</span>
-      <span v-if="eventDay.timeSlots.length === 0">Unavailable</span>
-      <TimeSelection
-        v-else
-        v-for="(timeSlot, timeSlotIntex) in eventDay.timeSlots"
-        :key="eventDay.day + '-' + timeSlotIntex"
-        :event-index="eventIndex"
-        :time-slot-index="timeSlotIntex"
-        :time-slot-entry="eventDay.day + '-' + timeSlotIntex"
-        v-model="timeSlot.start"
-        @click:add-more-slot="newTimeSlot(eventDay, timeSlotIntex)"
-      />
+    <div v-if="showSchedule">
+      <div
+        v-for="(eventDay, eventIndex) in store.eventDays.value"
+        :key="eventDay.day"
+        ref="timeSelection"
+        data-class="grid grid-cols-[10px,100px,1fr] gap-4 mb-2 items-center"
+      >
+        <input type="checkbox" :class="checkboxClass" />
+        <span :class="['font-bold mb-0', labelClass]">{{ eventDay.day }}</span>
+        <span v-if="eventDay.timeSlots.length === 0">Unavailable</span>
+        <TimeSelection
+          v-else
+          v-for="(timeSlot, timeSlotIntex) in eventDay.timeSlots"
+          :key="eventDay.day + '-' + timeSlotIntex"
+          :event-index="eventIndex"
+          :time-slot-index="timeSlotIntex"
+          :time-slot-entry="eventDay.day + '-' + timeSlotIntex"
+          v-model="timeSlot.start"
+          @click:add-more-slot="newTimeSlot(eventDay, timeSlotIntex)"
+        />
+      </div>
     </div>
   </div>
 </template>
