@@ -13,7 +13,6 @@ const store = storeToRefs(useBookingStore())
 const rawStore = useBookingStore()
 
 const timeslotStore = rawStore.eventDays[props.eventIndex].timeSlots[props.timeSlotIndex]
-console.log(timeslotStore)
 
 const startTime = defineModel<string>()
 const endTime = computed(() => {
@@ -23,6 +22,8 @@ const endTime = computed(() => {
     start.getTime() +
       parseInt(store.state.value.visitDuration) * store.state.value.numberOfBooking * 60000
   )
+
+  console.log('start', startTime.value)
 
   return format(end, 'HH:mm')
 })
