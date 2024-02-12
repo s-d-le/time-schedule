@@ -85,7 +85,7 @@ const buttonClass =
       v-for="(eventDay, eventIndex) in store.eventDays.value"
       :key="eventDay.day"
       ref="timeSelection"
-      data-class="grid grid-cols-[10px,100px,1fr] gap-4 mb-2 items-center"
+      class="grid grid-cols-[10px,100px,1fr] gap-4 mb-2 items-center"
     >
       <input
         type="checkbox"
@@ -96,15 +96,17 @@ const buttonClass =
         @change="toggleCheckBox(eventIndex)"
       />
       <span :class="['font-bold mb-0', labelClass]">{{ eventDay.day }}</span>
-      <span v-if="eventDay.timeSlots.length === 0">Unavailable</span>
-      <TimeSelection
-        v-else
-        v-for="(timeSlot, timeSlotIntex) in eventDay.timeSlots"
-        :key="eventDay.day + '-' + timeSlotIntex"
-        :event-index="eventIndex"
-        :time-slot-index="timeSlotIntex"
-        v-model="timeSlot.start"
-      />
+      <div class="flex flex-col gap-2">
+        <span v-if="eventDay.timeSlots.length === 0">Unavailable</span>
+        <TimeSelection
+          v-else
+          v-for="(timeSlot, timeSlotIntex) in eventDay.timeSlots"
+          :key="eventDay.day + '-' + timeSlotIntex"
+          :event-index="eventIndex"
+          :time-slot-index="timeSlotIntex"
+          v-model="timeSlot.start"
+        />
+      </div>
     </div>
   </div>
 </template>
