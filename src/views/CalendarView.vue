@@ -2,7 +2,7 @@
 import { onMounted, toRaw } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookingStore } from '@/stores/booking'
-import { format, addMinutes, parse } from 'date-fns'
+import { format, addMinutes, parse, getHours, getMinutes } from 'date-fns'
 
 import { ScheduleXCalendar } from '@schedule-x/vue'
 import { createCalendar, viewDay, viewWeek } from '@schedule-x/calendar'
@@ -33,8 +33,6 @@ const calendar: CalendarEvent[] = []
 const numberOfBooking = store.state.value.numberOfBooking
 const visitDuration = parseInt(store.state.value.visitDuration)
 
-console.log(visitDuration)
-
 eventsData.forEach((eventDay) => {
   const dayIndex = dayIndexMap[eventDay.day] // Get the index of the day in a week
   const currentDate = new Date() // Get the current date
@@ -51,19 +49,19 @@ eventsData.forEach((eventDay) => {
     if (!timeSlot.end) return // Skip time slots without end time
 
     const startTime = new Date(firstMatchingDayDate) //Mon Feb 12 2024 08:17:22 GMT+0100 ...
+    const endTime = new Date(firstMatchingDayDate)
 
     const startTimeSlot = parse(timeSlot.start, 'HH:mm', new Date())
-    const endTime = addMinutes(startTimeSlot, visitDuration)
+    const endTimeSlot = addMinutes(startTimeSlot, visitDuration)
 
     // Extract hours and minutes from time slot strings
     const [startHours, startMinutes] = timeSlot.start.split(':')
-    // const [endHours, endMinutes] = (timeSlot.end ?? timeSlot.start).split(':')
 
     // Set hours and minutes to start and end dates
     startTime.setHours(parseInt(startHours))
     startTime.setMinutes(parseInt(startMinutes))
-    // endTime.setHours(parseInt(endHours))
-    // endTime.setMinutes(parseInt(endMinutes))
+    endTime.setHours(getHours(endTimeSlot))
+    endTime.setMinutes(getMinutes(endTimeSlot))
 
     // Push calendar entry
     calendar.push({
@@ -76,10 +74,6 @@ eventsData.forEach((eventDay) => {
 })
 
 console.log('calendar', calendar)
-
-onMounted(() => {
-  console.log(eventsData)
-})
 
 const today = format(new Date(), 'yyyy-MM-dd')
 
