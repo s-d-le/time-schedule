@@ -7,13 +7,16 @@ import TimeSelection from '@/components/TimeSelection.vue'
 import type { EventDay } from '@/types/event-day'
 
 const store = storeToRefs(useBookingStore())
+const rawStore = useBookingStore()
+
+console.log(rawStore.state.visitDuration)
 
 const showSchedule = ref<boolean>(false)
 
 const settings = reactive({
-  visitDuration: VisitDuration['15 min'],
-  numberOfBooking: 1,
-  videoTourCall: false
+  visitDuration: rawStore.state.visitDuration,
+  numberOfBooking: rawStore.state.numberOfBooking,
+  allowVideoTourCall: rawStore.state.allowVideoTourCall
 })
 
 const setBookingSettings = () => {
@@ -85,7 +88,7 @@ const buttonClass =
           type="checkbox"
           id="videoTourCall"
           :class="checkboxClass"
-          v-model="settings.videoTourCall"
+          v-model="settings.allowVideoTourCall"
         />
         <label for="videoTourCall" :class="labelClass">Allow video tour call</label>
       </div>

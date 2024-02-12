@@ -9,7 +9,8 @@ export const useBookingStore = defineStore(
   () => {
     const state = reactive({
       visitDuration: VisitDuration['15 min'],
-      numberOfBooking: 1
+      numberOfBooking: 1,
+      allowVideoTourCall: false
     })
 
     const eventDays = ref<EventDay[]>([
