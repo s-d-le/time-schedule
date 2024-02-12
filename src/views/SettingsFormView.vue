@@ -4,12 +4,9 @@ import { useBookingStore } from '@/stores/booking'
 import { VisitDuration } from '@/types/visit-duration'
 import { storeToRefs } from 'pinia'
 import TimeSelection from '@/components/TimeSelection.vue'
-import type { EventDay } from '@/types/event-day'
 
 const store = storeToRefs(useBookingStore())
 const rawStore = useBookingStore()
-
-console.log(rawStore.state.visitDuration)
 
 const showSchedule = ref<boolean>(false)
 
@@ -27,27 +24,6 @@ const setBookingSettings = () => {
 }
 
 const timeSelection = ref<InstanceType<typeof TimeSelection>>()
-
-const newTimeSlot = (eventDay: EventDay, index: number) => {
-  // eventDay.timeSlots?.push({
-  //   startTime: '00:00'
-  // })
-  // console.log(toRaw(eventDay))
-  // if (timeSelection.value) {
-  //   console.log(toRaw(timeSelection.value[index].endTime))
-  // }
-  //   eventDay.timeSlots?.push({
-  //     startTime: '00:00'
-  //   })
-  // } else {
-  //   eventDay.timeSlots = [
-  //     {
-  //       startTime: '00:00'
-  //     }
-  //   ]
-  // }
-  // console.log(timeSelection.value)
-}
 
 const labelClass = 'mb-2 text-sm font-medium text-gray-900 dark:text-white'
 const optionClass =
@@ -95,27 +71,30 @@ const buttonClass =
       <button :class="buttonClass">Next</button>
     </form>
 
-    <div v-if="showSchedule">
-      <div
-        v-for="(eventDay, eventIndex) in store.eventDays.value"
-        :key="eventDay.day"
-        ref="timeSelection"
-        data-class="grid grid-cols-[10px,100px,1fr] gap-4 mb-2 items-center"
-      >
-        <input type="checkbox" :class="checkboxClass" />
-        <span :class="['font-bold mb-0', labelClass]">{{ eventDay.day }}</span>
-        <span v-if="eventDay.timeSlots.length === 0">Unavailable</span>
-        <TimeSelection
-          v-else
-          v-for="(timeSlot, timeSlotIntex) in eventDay.timeSlots"
-          :key="eventDay.day + '-' + timeSlotIntex"
-          :event-index="eventIndex"
-          :time-slot-index="timeSlotIntex"
-          :time-slot-entry="eventDay.day + '-' + timeSlotIntex"
-          v-model="timeSlot.start"
-          @click:add-more-slot="newTimeSlot(eventDay, timeSlotIntex)"
-        />
-      </div>
+    <div
+      v-for="(eventDay, eventIndex) in store.eventDays.value"
+      :key="eventDay.day"
+      ref="timeSelection"
+      data-class="grid grid-cols-[10px,100px,1fr] gap-4 mb-2 items-center"
+    >
+      <input
+        type="checkbox"
+        :class="checkboxClass"
+        @id="eventDay"
+        :checked="eventDay.available"
+        v-model="eventDay.available"
+      />
+      <span :class="['font-bold mb-0', labelClass]">{{ eventDay.day }}</span>
+      <span v-if="eventDay.timeSlots.length === 0">Unavailable</span>
+      <TimeSelection
+        v-else
+        v-for="(timeSlot, timeSlotIntex) in eventDay.timeSlots"
+        :key="eventDay.day + '-' + timeSlotIntex"
+        :event-index="eventIndex"
+        :time-slot-index="timeSlotIntex"
+        :time-slot-entry="eventDay.day + '-' + timeSlotIntex"
+        v-model="timeSlot.start"
+      />
     </div>
   </div>
 </template>
