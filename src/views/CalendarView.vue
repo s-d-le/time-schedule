@@ -2,7 +2,7 @@
 import { onMounted, toRaw } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBookingStore } from '@/stores/booking'
-import { format } from 'date-fns'
+import { format, addMinutes, parse } from 'date-fns'
 
 import { ScheduleXCalendar } from '@schedule-x/vue'
 import { createCalendar, viewDay, viewWeek } from '@schedule-x/calendar'
@@ -50,18 +50,20 @@ eventsData.forEach((eventDay) => {
   eventDay.timeSlots.forEach((timeSlot) => {
     if (!timeSlot.end) return // Skip time slots without end time
 
-    const startTime = new Date(firstMatchingDayDate)
-    const endTime = new Date(firstMatchingDayDate)
+    const startTime = new Date(firstMatchingDayDate) //Mon Feb 12 2024 08:17:22 GMT+0100 ...
+
+    const startTimeSlot = parse(timeSlot.start, 'HH:mm', new Date())
+    const endTime = addMinutes(startTimeSlot, visitDuration)
 
     // Extract hours and minutes from time slot strings
     const [startHours, startMinutes] = timeSlot.start.split(':')
-    const [endHours, endMinutes] = (timeSlot.end ?? timeSlot.start).split(':')
+    // const [endHours, endMinutes] = (timeSlot.end ?? timeSlot.start).split(':')
 
     // Set hours and minutes to start and end dates
     startTime.setHours(parseInt(startHours))
     startTime.setMinutes(parseInt(startMinutes))
-    endTime.setHours(parseInt(endHours))
-    endTime.setMinutes(parseInt(endMinutes))
+    // endTime.setHours(parseInt(endHours))
+    // endTime.setMinutes(parseInt(endMinutes))
 
     // Push calendar entry
     calendar.push({
