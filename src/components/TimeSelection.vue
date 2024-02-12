@@ -5,7 +5,6 @@ import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
-  timeSlotEntry: string
   eventIndex: number
   timeSlotIndex: number
 }>()
@@ -14,6 +13,7 @@ const store = storeToRefs(useBookingStore())
 const rawStore = useBookingStore()
 
 const timeslotStore = rawStore.eventDays[props.eventIndex].timeSlots[props.timeSlotIndex]
+console.log(timeslotStore)
 
 const startTime = defineModel<string>()
 const endTime = computed(() => {

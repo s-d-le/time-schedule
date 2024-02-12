@@ -6,6 +6,7 @@ import { format, addMinutes, parse, getHours, getMinutes } from 'date-fns'
 
 import { ScheduleXCalendar } from '@schedule-x/vue'
 import { createCalendar, viewDay, viewWeek } from '@schedule-x/calendar'
+import { createEventModalPlugin } from '@schedule-x/event-modal'
 import '@schedule-x/theme-default/dist/index.css'
 
 const store = storeToRefs(useBookingStore())
@@ -86,7 +87,8 @@ const calendarApp = createCalendar({
     start: '06:00',
     end: '18:00'
   },
-  events: calendar
+  events: calendar,
+  plugins: [createEventModalPlugin()]
 })
 </script>
 

@@ -103,7 +103,6 @@ const buttonClass =
         :key="eventDay.day + '-' + timeSlotIntex"
         :event-index="eventIndex"
         :time-slot-index="timeSlotIntex"
-        :time-slot-entry="eventDay.day + '-' + timeSlotIntex"
         v-model="timeSlot.start"
       />
     </div>
