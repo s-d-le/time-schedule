@@ -23,6 +23,16 @@ const setBookingSettings = () => {
   store.state.value.numberOfBooking = numberOfBooking
 }
 
+const toggleCheckBox = (eventIndex: number) => {
+  if (rawStore.eventDays[eventIndex].available === false) {
+    rawStore.eventDays[eventIndex].available = false
+    rawStore.eventDays[eventIndex].timeSlots = []
+  } else {
+    rawStore.eventDays[eventIndex].available = true
+    rawStore.eventDays[eventIndex].timeSlots = [{ start: '09:00' }]
+  }
+}
+
 const timeSelection = ref<InstanceType<typeof TimeSelection>>()
 
 const labelClass = 'mb-2 text-sm font-medium text-gray-900 dark:text-white'
@@ -83,6 +93,7 @@ const buttonClass =
         @id="eventDay"
         :checked="eventDay.available"
         v-model="eventDay.available"
+        @change="toggleCheckBox(eventIndex)"
       />
       <span :class="['font-bold mb-0', labelClass]">{{ eventDay.day }}</span>
       <span v-if="eventDay.timeSlots.length === 0">Unavailable</span>
