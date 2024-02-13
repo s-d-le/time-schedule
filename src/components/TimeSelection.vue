@@ -54,7 +54,7 @@ const inputClass =
     <span class="font-bold">-</span>
     <input
       type="time"
-      :class="['text-gray-100 dark:text-gray-500', inputClass]"
+      :class="['text-gray-400 dark:text-gray-500', inputClass]"
       id="endTime"
       :value="endTime"
       disabled
