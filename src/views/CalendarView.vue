@@ -85,7 +85,7 @@ const calendarApp = createCalendar({
   defaultView: viewWeek.name,
   dayBoundaries: {
     start: '06:00',
-    end: '18:00'
+    end: '20:00'
   },
   events: calendar,
   plugins: [createEventModalPlugin()]
