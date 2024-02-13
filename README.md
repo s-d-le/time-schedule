@@ -11,7 +11,7 @@ Created with Vue 3, TypeScript, Pinia and Schedule-X in Vite.
 - Pinia state management and persistent `localStorage`
 - Hover to show details on calendar events
 - Typescript and data models
-- SPA with routing
+- SPA routing
 - Demo unit test with pinia store
 - Demo tailwindCSS usage
 

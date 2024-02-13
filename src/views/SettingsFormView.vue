@@ -80,19 +80,19 @@ const buttonClass =
       v-for="(eventDay, eventIndex) in store.eventDays.value"
       :key="eventDay.day"
       ref="timeSelection"
-      class="grid grid-cols-[10px,100px,1fr] gap-4 mb-2 items-center"
+      class="grid grid-cols-[10px,100px,1fr] gap-4 mb-2"
     >
       <input
         type="checkbox"
-        :class="checkboxClass"
+        :class="['mt-4', checkboxClass]"
         @id="eventDay"
-        :checked="eventDay.available"
+        :checked="eventDay.timeSlots.length > 0"
         v-model="eventDay.available"
         @change="toggleCheckBox(eventIndex)"
       />
-      <span :class="['font-bold mb-0', labelClass]">{{ eventDay.day }}</span>
+      <span :class="['font-bold mt-3 mb-0', labelClass]">{{ eventDay.day }}</span>
       <div class="flex flex-col gap-2">
-        <span v-if="eventDay.timeSlots.length === 0">Unavailable</span>
+        <span v-if="eventDay.timeSlots.length === 0" class="mt-3">Unavailable</span>
         <TimeSelection
           v-else
           v-for="(timeSlot, timeSlotIntex) in eventDay.timeSlots"
