@@ -1,25 +1,27 @@
 # Time schedule
 
-Created with Vue 3 in Vite.
+Created with Vue 3, TypeScript, Pinia and Schedule-X in Vite.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- Create time slots with `endTime` automatically filled.
+- Create calendar events based on `numberOfBooking` and `visitDuration`
+- Events are made ahead of time with first matching day of the week. It will not create events for past days
+- Day selection will create/remove all time slots
+- Pinia state management and persistent `localStorage`
+- Hover to show details on calendar events
+- Typescript and data models
+- SPA with routing
+- Demo unit test with pinia store
+- Demo tailwindCSS usage
 
-## Type Support for `.vue` Imports in TS
+## Future Improvements
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- Recurring events
+- Refactor calendar render method
+- Write calendar edit event plugin for Schedule-X
+- Input validation (`startTime`, `endTime`, min max values etc)
+- Better model and data flow for backend integration
 
 ## Project Setup
 
